@@ -14,43 +14,26 @@ import { Observable } from 'rxjs/internal/Observable';
 })
 export class AppComponent {
   title = 'card-board';
-  // todo: Task[] = [
-  //   {
-  //     title: 'Buy milk',
-  //     description: 'Go to the store and buy milk'
-  //   },
-  //   {
-  //     title: 'Create a Kanban app',
-  //     description: 'Using Firebase and Angular create a Kanban app!'
-  //   }
-  // ];
-  // inProgress: Task[] = [];
-  // done: Task[] = [];
 
   item$: Observable<any[]>;
   todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
   done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
   test = ['aaaaaaaaaaa', 'ssssssssssss', 'dddddddddd', 'eeeeeee', 'ggggggggggg'];
-  // test1:any[] = [, 'ssssssssssss', 'dddddddddd', 'eeeeeee', 'ggggggggggg'];
-  test1:any[] = [];
-  test2:any[] = [];
-  testArray:any[]=[];
-  // todo: Observable<Task[]>;
-  // done: Observable<Task[]>;
-  // inProgress: Observable<Task[]>;
+
+  test1: any[] = [];
+  test2: any[] = [];
+  testArray: any[] = [];
+  testArrayString: string[] = ['test1', 'test2'];
 
 
+  itemCardArrayContainer: any[] = []
   constructor(private dialog: MatDialog, private fbs: FirebaseServiceService) {
-    // this.todo = this.fbs.getCollectionValueChange('todo');
-    // this.done = th is.fbs.getCollectionValueChange('done');
-    // this.inProgress = this.fbs.getCollectionValueChange('inProgress');
-    
-    let tx = {name:'aaaaaaaaaaa'}
-    this.test1.push(tx);
-    this.test2.push(tx);
-
-    this.testArray.push(this.test1);
-    this.testArray.push(this.test2);
+    let newItemCardArray = new itemCardArray('doneee', [])
+    let newItemCardArray2 = new itemCardArray('todooo', [])
+    this.itemCardArrayContainer.push(newItemCardArray);
+    this.itemCardArrayContainer.push(newItemCardArray2);
+    console.log(this.itemCardArrayContainer);
+    console.log('"this.itemCardArrayContainer"');
 
     this.item$ = this.fbs.getCollectionValueChange('items');
   }
@@ -77,7 +60,25 @@ export class AppComponent {
   //   });
   // }
 
-  drop(event: CdkDragDrop<string[]>|CdkDragDrop<any[]>) {
+  tDrop(event: CdkDragDrop<string[]> | CdkDragDrop<any[]>) {
+    console.log(event);
+    
+    if (event.previousContainer === event.container) {
+      console.log('event transfer');
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      console.log('event not transfer');
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data, 
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
+
+  }
+
+  drop(event: CdkDragDrop<string[]> | CdkDragDrop<any[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -128,3 +129,30 @@ export class AppComponent {
 
   }
 }
+
+class itemCardArray {
+  arrayID: string;
+  arrayContent: any[];
+  constructor(arrayID: string, arrayContent: any[]) {
+    this.arrayID = arrayID;
+    this.arrayContent = arrayContent;
+    this.addNullItemCard();
+  }
+
+  addNullItemCard() {
+    this.arrayContent.push(new itemCardItem(this.arrayContent.length, 'nullName' + this.arrayContent.length))
+    this.arrayContent.push(new itemCardItem(this.arrayContent.length, 'nullName' + this.arrayContent.length))
+    this.arrayContent.push(new itemCardItem(this.arrayContent.length, 'nullName' + this.arrayContent.length))
+  }
+}
+
+class itemCardItem {
+  id: number;
+  name: string;
+
+  constructor(id: number, name: string) {
+    this.id = id;
+    this.name = name;
+  }
+}
+
