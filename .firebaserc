@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "camera-af868": {
+      "hosting": {
+        "card-board": [
+          "loreamlist"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "camera-af868"
+  }
+}
