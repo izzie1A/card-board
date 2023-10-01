@@ -1,34 +1,42 @@
-<ul>
-  <li *ngFor="let item of item$ | async">
-    {{ item.name }}
-  </li>
-</ul>
-
 <div class="content-wrapper">
   <div class="container-wrapper">
 
-    <div cdkDropListGroup>
-      a ArrayContainer
-      <div cdkDropList *ngFor="let itemArray of itemCardArrayContainer" [cdkDropListData]="itemArray.arrayContent"
-        (cdkDropListDropped)="tDrop($event)">
-        b {{itemArray.arrayID}}
-        <div class="" *ngFor="let item of itemArray.arrayContent" cdkDrag>
-          c item
-          {{item.name}}
-        </div>
-      </div>
-    </div>
-
     <!--  -->
     <!--  -->
 
-    <div cdkDropListGroup>
+    <!-- <div cdkDropListGroup>
       <div class="example-container" *ngFor="let itemArray of itemCardArrayContainer">
         <h2>C {{ itemArray.arrayID}}</h2>
         <div cdkDropList [cdkDropListData]="itemArray.arrayContent" (cdkDropListDropped)="drop($event)">
           <div class="example-box" *ngFor="let item of itemArray.arrayContent" cdkDrag>
             {{item.name}}
           </div>
+        </div> 
+      </div>
+    </div> -->
+    <button (click)="newTask()" mat-button>
+      <mat-icon>add</mat-icon> Add Task
+    </button>
+
+    <div cdkDropListGroup>
+      <div class="" *ngFor="let itemArray of itemCardArrayContainer">
+        <h2>C {{ itemArray.arrayID}}</h2>
+        <button (click)="a(itemArray.arrayID)">c</button>
+        <button (click)="0">u</button>
+        <button (click)="0">r</button>
+        <div cdkDropList [cdkDropListData]="itemArray.arrayContent"
+          (cdkDropListDropped)="drop(itemArray.arrayID,$event)" #{{itemArray.arrayID}}="cdkDropList">
+          <div *ngFor="let item of itemArray.arrayContent">
+            <app-task [task]="item" cdkDrag>
+            </app-task>
+            <button (click)="d(itemArray.arrayID,item.id)">d</button>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- <div cdkDropListGroup>
+      <div  (cdkDropListDropped)="drop($event)" cdkDropList>
+        <app-task *ngFor="let x of item$ |async" [task]="x" cdkDrag></app-task>
+      </div>
+    </div> -->

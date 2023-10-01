@@ -6,7 +6,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { TaskDialogResult, TaskDialogComponent } from './components/task-dialog/task-dialog.component';
 import { FirebaseServiceService } from './services/firebase-service.service';
 import { Observable } from 'rxjs/internal/Observable';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -27,107 +26,68 @@ export class AppComponent {
 
 
   itemCardArrayContainer: any[] = []
-  constructor(private dialog: MatDialog, private fbs: FirebaseServiceService) {
-    let newItemCardArray = new itemCardArray('doneee', [])
-    let newItemCardArray2 = new itemCardArray('todooo', [])
-    this.itemCardArrayContainer.push(newItemCardArray);
-    this.itemCardArrayContainer.push(newItemCardArray2);
-    console.log(this.itemCardArrayContainer);
-    console.log('"this.itemCardArrayContainer"');
-
+  constructor(private dialog: MatDialog, public fbs: FirebaseServiceService) {
     this.item$ = this.fbs.getCollectionValueChange('items');
+    this.item$.subscribe((x) => {
+      this.itemCardArrayContainer[0]=new itemCardArray('items', x);
+    })
+  }
+  a(address: string){
+    this.fbs.addNullDoc(address);
+  }
+  c(address: string, id: string, content: any){
+    this.fbs.createDoc(address,id,content);
+  }
+  u(address: string, id: string, content: any){
+    this.fbs.updateDoc(address,id,content);
+  }
+  r(address: string, id: string){
+    this.fbs.readDoc(address,id);
+  }
+  d(address: string, id: string){
+    this.fbs.deleteDoc(address,id);
   }
 
-  // editTask(list: 'done' | 'todo' | 'inProgress', task: Task): void {
-  //   const dialogRef = this.dialog.open(TaskDialogComponent, {
-  //     width: '270px',
-  //     data: {
-  //       task,
-  //       enableDelete: true,
-  //     },
-  //   });
-  //   dialogRef.afterClosed().subscribe((result: TaskDialogResult | undefined) => {
-  //     if (!result) {
-  //       return;
-  //     }
-  //     const dataList = this[list];
-  //     const taskIndex = dataList.indexOf(task);
-  //     if (result.delete) {
-  //       dataList.splice(taskIndex, 1);
-  //     } else {
-  //       dataList[taskIndex] = task;
-  //     }
-  //   });
-  // }
+  drop(address:string,event: CdkDragDrop<string[]> | CdkDragDrop<any[]>) {
+    console.log(event)
+    const item = event.previousContainer.data[event.previousIndex];
+    console.log(item)
+    const item2 = event.container.data[event.currentIndex];
+    console.log(item2)
 
-  tDrop(event: CdkDragDrop<string[]> | CdkDragDrop<any[]>) {
-    console.log(event);
-    
     if (event.previousContainer === event.container) {
-      console.log('event transfer');
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      // moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      // this.fbs.deleteDoc(address, item.id);
+      // this.fbs.createDoc(address, item.id ,item);
     } else {
-      console.log('event not transfer');
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data, 
-        event.previousIndex,
-        event.currentIndex,
-      );
+      // transferArrayItem(
+      //   event.previousContainer.data,
+      //   event.container.data,
+      //   event.previousIndex,
+      //   event.currentIndex,
+      // );
     }
-
   }
 
-  drop(event: CdkDragDrop<string[]> | CdkDragDrop<any[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
-
-    // drop(event: CdkDragDrop<string[]>) {
-    //   moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
-    // }
-
-    // drop(event: CdkDragDrop<Task[]>): void {
-    //   if (event.previousContainer === event.container) {
-    //     return;
-    //   }
-    //   if (!event.container.data || !event.previousContainer.data) {
-    //     return;
-    //   }
-    //   transferArrayItem(
-    //     event.previousContainer.data,
-    //     event.container.data,
-    //     event.previousIndex,
-    //     event.currentIndex
-    //   );
-    // }
-
-    // newTask(): void {
-    //   const dialogRef = this.dialog.open(TaskDialogComponent, {
-    //     width: '270px',
-    //     data: {
-    //       task: {},
-    //     },
-    //   });
-    //   dialogRef
-    //     .afterClosed()
-    //     .subscribe((result: TaskDialogResult | undefined) => {
-    //       if (!result) {
-    //         return;
-    //       }
-    //       this.todo.push(result.task);
-    //     });
-    // }
 
 
+  newTask(): void {
+    const dialogRef = this.dialog.open(TaskDialogComponent, {
+      width: '270px',
+      data: {
+        task: {},
+      },
+    });
+    dialogRef
+      .afterClosed()
+      .subscribe((result: TaskDialogResult | undefined) => {
+        if (!result) {
+          return;
+        }
+        this.itemCardArrayContainer[0].arrayContent.push(result.task);
+      });
   }
+
 }
 
 class itemCardArray {
@@ -140,9 +100,9 @@ class itemCardArray {
   }
 
   addNullItemCard() {
-    this.arrayContent.push(new itemCardItem(this.arrayContent.length, 'nullName' + this.arrayContent.length))
-    this.arrayContent.push(new itemCardItem(this.arrayContent.length, 'nullName' + this.arrayContent.length))
-    this.arrayContent.push(new itemCardItem(this.arrayContent.length, 'nullName' + this.arrayContent.length))
+    // this.arrayContent.push(new itemCardItem(this.arrayContent.length, 'nullName' + this.arrayContent.length))
+    // this.arrayContent.push(new itemCardItem(this.arrayContent.length, 'nullName' + this.arrayContent.length))
+    // this.arrayContent.push(new itemCardItem(this.arrayContent.length, 'nullName' + this.arrayContent.length))
   }
 }
 

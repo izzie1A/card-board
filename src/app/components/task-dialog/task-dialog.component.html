@@ -7,6 +7,10 @@
     <mat-label>Description</mat-label>
     <textarea matInput [(ngModel)]="data.task.description"></textarea>
 </mat-form-field>
+<mat-form-field>
+    <mat-label>id</mat-label>
+    <textarea matInput [(ngModel)]="data.task.id"></textarea>
+</mat-form-field>
 
 <div mat-dialog-actions>
     <button mat-button [mat-dialog-close]="{ task: data.task }">OK</button>
