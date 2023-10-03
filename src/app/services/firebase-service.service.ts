@@ -21,7 +21,26 @@ export class FirebaseServiceService {
     const itemCollection = collection(this.firestore, 'items');
     this.item$ = collectionData(itemCollection);
 
-    let x = this.firestore
+    let xs = collectionData(collection(this.firestore, 'todo')) as Observable<Task[]>;
+    // let xs = collectionData(collection(this.firestore,'inProgress')) as Observable<Task[]>;
+    // let xs = collectionData(collection(this.firestore,'done')) as Observable<Task[]>;
+    // let todo = this.firestore.collection('todo').valueChanges({ idField: 'i d' }) as Observable<Task[]>;
+    // let inProgress = this.firestore.collection('inProgress').valueChanges({ idField: 'id' }) as Observable<Task[]>;
+    // let done = this.firestore.collection('done').valueChanges({ idField: 'id' }) as Observable<Task[]>;
+
+  }
+
+  g(address: string) {
+    const itemCollection = collection(this.firestore, address);
+    let x = collectionData(itemCollection) as Observable<Task[]>;
+    // return new Promise(resolve => {
+    //   x.subscribe((xx) => {
+    //     console.log(xx);
+    //     // return xx;
+    //     resolve(xx);
+    //   })
+    // })
+    return collectionData(collection(this.firestore, address)) as Observable<Task[]>;
   }
 
   getCollectionValueChange(address: string) {
@@ -39,41 +58,58 @@ export class FirebaseServiceService {
       console.log("Current data: ", doc.data());
     });
   }
-
-  async docSave(address: string, id: string, content: any) {
-    console.log(address, id, content)
-    const docSnap = await getDoc(doc(this.firestore, address, id));
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-      this.updateDoc(address, id, content)
-    } else {
-      console.log("No such document! new create");
-      const docRef = await addDoc(collection(this.firestore, address), content);
-      console.log("Document written with ID: ", docRef.id);
-    }
-  }
   async addNullDoc(address: string) {
-
     const coll = collection(this.firestore, address);
     const snapshot = await getCountFromServer(coll);
     console.log('count: ', snapshot.data().count);
-
+    let x = snapshot.data().count.toString();
     let content: Task = {
-      id: snapshot.data().count,
-      title: 'undefindedTitle',
-      description: 'undefindeddescription',
-      name: 'undefindedName'
+      id: 'undefinded',
+      title: x + 'undefindedTitle',
+      description: x + 'undefindeddescription',
+      name: x + 'undefindedName'
     }
-
     console.log('created', content)
-    return await setDoc(doc(this.firestore, address, content.id.toString()), content);
+    const docRef = await addDoc(collection(this.firestore,address), content);
+    console.log("Document written with ID: ", docRef.id);
+    content.id = docRef.id.toString();
+    const docReff = doc(this.firestore, address, docRef.id);
+    await updateDoc(docReff, {id:docRef.id.toString()});
+    // return await setDoc(doc(this.firestore, address, content.id.toString()), content);
   }
+  // async addNullDoc(address: string) {
+  //   const coll = collection(this.firestore, address);
+  //   const snapshot = await getCountFromServer(coll);
+  //   console.log('count: ', snapshot.data().count);
+  //   let x = snapshot.data().count.toString();
+  //   const content: Task = {
+  //     id: snapshot.data().count,
+  //     title: x + 'undefindedTitle',
+  //     description: x + 'undefindeddescription',
+  //     name: x + 'undefindedName'
+  //   }
+  //   console.log('created', content)
+  //   return await setDoc(doc(this.firestore, address, content.id.toString()), content);
+  // }
+
+  async docSave(address: string, id: string, content: any) {
+    const docSnap = await getDoc(doc(this.firestore, address, id));
+    if (docSnap.exists()) {
+      console.log("Document data exist:", docSnap.data());
+      this.updateDoc(address, id, content)
+    } else {
+      console.log("No such document! new create");
+      // const docRef = await addDoc(collection(this.firestore, address), content);
+      const docRef = await setDoc(doc(this.firestore, address, id), content);
+      console.log("Document written with ID: ", docRef);
+    }
+  }
+
   async createDoc(address: string, id: string, content: any) {
     console.log('created', content)
     return await setDoc(doc(this.firestore, address, id), content);
   }
-    async readDoc(address: string, id: string) {
-      
+  async readDoc(address: string, id: string) {
     const docRef = doc(this.firestore, address, id);
     try {
       const doc = await getDocFromCache(docRef);

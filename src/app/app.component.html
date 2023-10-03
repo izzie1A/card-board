@@ -1,42 +1,135 @@
 <div class="content-wrapper">
   <div class="container-wrapper">
+    <div class="container">
+      <h2>Todo</h2>
+      <button (click)="newTask()" mat-button>
+        <mat-icon>add</mat-icon> Add Task
+      </button>
+      <mat-card
+      cdkDropList
+      id="todo"
+      #todoList="cdkDropList"
+      [cdkDropListData]="todo | async"
+      [cdkDropListConnectedTo]="[]"
+      (cdkDropListDropped)="drop($event)"
+      class="list">
+      <p class="empty-label" *ngIf="(todo | async)?.length === 0">Empty list</p>
+      <app-task (edit)="editTask('todo', $event)" *ngFor="let task of todo | async" cdkDrag [task]="task"></app-task>
+    </mat-card>
+    </div>
+    
+    <div class="container">
+      <h2>inprogress</h2>
+      <button (click)="newTask()" mat-button>
+        <mat-icon>add</mat-icon> Add Task
+      </button>
+      <mat-card
+      cdkDropList
+      id="inprogress"
+      #inprogressList="cdkDropList"
+      [cdkDropListData]="inProgress | async"
+      [cdkDropListConnectedTo]="[]"
+      (cdkDropListDropped)="drop($event)"
+      class="list">
+      <p class="empty-label" *ngIf="(inProgress | async)?.length === 0">Empty list</p>
+      <app-task (edit)="editTask('inProgress', $event)" *ngFor="let task of inProgress | async" cdkDrag [task]="task"></app-task>
+    </mat-card>
+    </div>
 
-    <!--  -->
-    <!--  -->
+  </div>
+</div>
 
-    <!-- <div cdkDropListGroup>
-      <div class="example-container" *ngFor="let itemArray of itemCardArrayContainer">
-        <h2>C {{ itemArray.arrayID}}</h2>
-        <div cdkDropList [cdkDropListData]="itemArray.arrayContent" (cdkDropListDropped)="drop($event)">
-          <div class="example-box" *ngFor="let item of itemArray.arrayContent" cdkDrag>
-            {{item.name}}
-          </div>
-        </div> 
-      </div>
-    </div> -->
-    <button (click)="newTask()" mat-button>
-      <mat-icon>add</mat-icon> Add Task
-    </button>
+<!--  -->
+<!--  -->
 
-    <div cdkDropListGroup>
-      <div class="" *ngFor="let itemArray of itemCardArrayContainer">
+<!-- <div class="flexAround" cdkDropListGroup>
+      <button (click)="newTask()" mat-button>
+        <mat-icon>add</mat-icon> Add Task
+      </button>
+      <div *ngFor="let itemArray of itemCardArrayContainer">
         <h2>C {{ itemArray.arrayID}}</h2>
         <button (click)="a(itemArray.arrayID)">c</button>
-        <button (click)="0">u</button>
-        <button (click)="0">r</button>
         <div cdkDropList [cdkDropListData]="itemArray.arrayContent"
-          (cdkDropListDropped)="drop(itemArray.arrayID,$event)" #{{itemArray.arrayID}}="cdkDropList">
+          (cdkDropListDropped)="drop(itemArray.arrayID,$event)" #{{itemArray.arrayID}}="cdkDropList" id="{{itemArray.arrayID}}">
           <div *ngFor="let item of itemArray.arrayContent">
             <app-task [task]="item" cdkDrag>
             </app-task>
             <button (click)="d(itemArray.arrayID,item.id)">d</button>
-          </div>
-        </div>
+          </div> </div>
+      </div>
+    </div> -->
+<div class="flexAround" cdkDropListGroup>
+      <button (click)="newTask()" mat-button>
+        <mat-icon>add</mat-icon> Add Task
+      </button>
+      <div *ngFor="let itemArray of itemCardArrayContainer">
+        <h2>C {{ itemArray.arrayID}}</h2>
+        <button (click)="a(itemArray.arrayID)">c</button>
+        <div cdkDropList [cdkDropListData]="itemArray.arrayContent"
+          (cdkDropListDropped)="drop($event)" #{{itemArray.arrayID}}="cdkDropList" id="{{itemArray.arrayID}}">
+          <div *ngFor="let item of itemArray.arrayContent">
+            <app-task [task]="item" (edit)="editTask(itemArray.arrayID, $event)" cdkDrag>
+            </app-task>
+            <button (click)="d(itemArray.arrayID,item.id)">d</button>
+          </div> </div>
       </div>
     </div>
 
-    <!-- <div cdkDropListGroup>
-      <div  (cdkDropListDropped)="drop($event)" cdkDropList>
-        <app-task *ngFor="let x of item$ |async" [task]="x" cdkDrag></app-task>
-      </div>
-    </div> -->
+<style>
+  mat-toolbar {
+    margin-bottom: 20px;
+  }
+
+  mat-toolbar>span {
+    margin-left: 10px;
+  }
+
+  .content-wrapper {
+    max-width: 1400px;
+    margin: auto;
+  }
+
+  .container-wrapper {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .container {
+    width: 400px;
+    margin: 0 25px 25px 0;
+  }
+
+  .list {
+    border: solid 1px #ccc;
+    min-height: 60px;
+    border-radius: 4px;
+  }
+
+  app-new-task {
+    margin-bottom: 30px;
+  }
+
+  .empty-label {
+    font-size: 2em;
+    padding-top: 10px;
+    text-align: center;
+    opacity: 0.2;
+  }
+
+  .cdk-drag-animating {
+    transition: transform 250ms;
+  }
+
+  .cdk-drag-placeholder {
+    opacity: 0;
+  }
+
+  :host {
+    display: block;
+  }
+
+  .item {
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+</style>
