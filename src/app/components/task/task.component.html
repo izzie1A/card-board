@@ -1,8 +1,28 @@
-<mat-card class="item" *ngIf="task" (dblclick)="edit.emit(task)">
+<!-- <mat-card class="item" *ngIf="task" (dblclick)="edit.emit(task)">
   <h2>{{ task.id }}</h2>
   <h2>{{ task.title }}</h2>
   <h2>{{ task.name }}</h2>
   <p>
     {{ task.description }}
   </p>
-</mat-card>
+</mat-card> -->
+
+<div class="itemCard" *ngIf="task" (dblclick)="edit.emit(task)">
+  <div class="itemCardHeader">
+    <h2>{{ task.name }}</h2>
+    <div class="itemCardControlBar">
+      <button>asd</button>
+      <button>asd</button>
+      <button>asd</button>
+    </div>
+  </div>
+  <div class="itemCardSholder">
+    <p>
+      {{ task.description }}
+    </p>
+  </div>`
+  <div class="itemCardBody">
+    <h2>{{ task.id }}</h2>
+    <h2>{{ task.title }}</h2>
+  </div>
+</div>

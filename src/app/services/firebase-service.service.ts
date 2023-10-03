@@ -33,13 +33,6 @@ export class FirebaseServiceService {
   g(address: string) {
     const itemCollection = collection(this.firestore, address);
     let x = collectionData(itemCollection) as Observable<Task[]>;
-    // return new Promise(resolve => {
-    //   x.subscribe((xx) => {
-    //     console.log(xx);
-    //     // return xx;
-    //     resolve(xx);
-    //   })
-    // })
     return collectionData(collection(this.firestore, address)) as Observable<Task[]>;
   }
 
@@ -53,44 +46,24 @@ export class FirebaseServiceService {
     return collectionData(itemCollection) as Observable<Task[]>
   }
 
-  getSnapshot() {
-    const unsub = onSnapshot(doc(this.firestore, "cities", "SF"), (doc) => {
-      console.log("Current data: ", doc.data());
-    });
-  }
   async addNullDoc(address: string) {
     const coll = collection(this.firestore, address);
     const snapshot = await getCountFromServer(coll);
-    console.log('count: ', snapshot.data().count);
     let x = snapshot.data().count.toString();
+    
     let content: Task = {
       id: 'undefinded',
       title: x + 'undefindedTitle',
       description: x + 'undefindeddescription',
       name: x + 'undefindedName'
     }
-    console.log('created', content)
+
     const docRef = await addDoc(collection(this.firestore,address), content);
-    console.log("Document written with ID: ", docRef.id);
+    // console.log("created Document written with ID: ", docRef.id, content);
     content.id = docRef.id.toString();
     const docReff = doc(this.firestore, address, docRef.id);
     await updateDoc(docReff, {id:docRef.id.toString()});
-    // return await setDoc(doc(this.firestore, address, content.id.toString()), content);
   }
-  // async addNullDoc(address: string) {
-  //   const coll = collection(this.firestore, address);
-  //   const snapshot = await getCountFromServer(coll);
-  //   console.log('count: ', snapshot.data().count);
-  //   let x = snapshot.data().count.toString();
-  //   const content: Task = {
-  //     id: snapshot.data().count,
-  //     title: x + 'undefindedTitle',
-  //     description: x + 'undefindeddescription',
-  //     name: x + 'undefindedName'
-  //   }
-  //   console.log('created', content)
-  //   return await setDoc(doc(this.firestore, address, content.id.toString()), content);
-  // }
 
   async docSave(address: string, id: string, content: any) {
     const docSnap = await getDoc(doc(this.firestore, address, id));
