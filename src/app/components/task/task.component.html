@@ -1,19 +1,13 @@
-<!-- <mat-card class="item" *ngIf="task" (dblclick)="edit.emit(task)">
-  <h2>{{ task.id }}</h2>
-  <h2>{{ task.title }}</h2>
-  <h2>{{ task.name }}</h2>
-  <p>
-    {{ task.description }}
-  </p>
-</mat-card> -->
-
 <div class="itemCard" *ngIf="task" (dblclick)="edit.emit(task)">
   <div class="itemCardHeader">
-    <h2>{{ task.name }}</h2>
+    <h2 class="t2">{{ task.name }}</h2>
     <div class="itemCardControlBar">
-      <button>asd</button>
-      <button>asd</button>
-      <button>asd</button>
+      <!-- <button (click)="editTest.emit()">test</button> -->
+      <!-- <button (click)="edit.emit()">edit</button> -->
+      <!-- <button (click)="itemCardModePoke()">POKE</button> -->
+      <button class="t hClick " (click)="itemCardModePoke()">
+        list
+      </button>
     </div>
   </div>
   <div class="itemCardSholder">
@@ -22,7 +16,32 @@
     </p>
   </div>`
   <div class="itemCardBody">
-    <h2>{{ task.id }}</h2>
+    <!-- <h2>{{ task.id }}</h2> -->
     <h2>{{ task.title }}</h2>
   </div>
+  <div class="itemCardBack">
+    <div class="flexAround" *ngIf="itemCardMode=='viewDetail'">
+      <button class="hClick" (click)="editDelete.emit(task)">
+        <span class="t">delete</span>
+        edit
+      </button>
+      <button class="hClick" (click)="edit.emit(task)">
+        <span class="t">edit</span>
+        delete
+      </button>
+    </div>
+  </div>
 </div>
+
+<style>
+  .t {
+    cursor: pointer;
+    font-family: 'Material Symbols Outlined';
+    font-size: var(--title);
+  }
+
+  .t2 {
+    overflow: hidden;
+    text-overflow: clip;
+  }
+</style>

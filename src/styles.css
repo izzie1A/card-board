@@ -91,7 +91,7 @@
     border-radius: 1vmin;
     overflow: hidden;
  
-    min-height: 30vh;
+    /* min-height: 30vh; */
     /* height: 50vh; */
  
     animation-duration: 4s;
@@ -111,10 +111,11 @@
     padding: 2%;
     color: var(--white);
  
-    display: grid;
-    grid-template-columns: 0.60fr 0.4fr;
+    display: flex;
+    /* display: grid;
+    grid-template-columns: 0.60fr 0.4fr; */
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
   }
  
   .itemCardHeaderTitle {

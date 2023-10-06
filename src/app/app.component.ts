@@ -17,21 +17,19 @@ export class AppComponent {
   // item$: Observable<any[]>;
   // item2$: Observable<any[]>;
   // todo: any[] = [];
-  todo: Observable<Task[]>;
-  inProgress: Observable<Task[]>;
-  done: Observable<Task[]>;
+  // todo: Observable<Task[]>;
+  // inProgress: Observable<Task[]>;
+  // done: Observable<Task[]>;
 
 
+  viewMode:'grid'|'list'|'roll'='list'
+  viewModeA = ['grid','list','roll'];
 
   itemCardArrayContainer: any[] = []
   constructor(private dialog: MatDialog, public fbs: FirebaseServiceService) {
-    this.todo = this.fbs.g('todo');
-    this.inProgress = this.fbs.g('inProgress');
-    this.done = this.fbs.g('done');
-    let x = this.fbs.g('todo');
-    console.log(x);
-
-
+    // this.todo = this.fbs.g('todo');
+    // this.inProgress = this.fbs.g('inProgress');
+    // this.done = this.fbs.g('done');
   }
   ngOnInit() {
     let itemS = this.fbs.getCollectionValueChange('items');
@@ -65,6 +63,7 @@ export class AppComponent {
     this.fbs.readDoc(address, id);
   }
   d(address: string, id: string) {
+    console.log('delete');
     this.fbs.deleteDoc(address, id);
   }
 
@@ -127,6 +126,9 @@ export class AppComponent {
   //     event.currentIndex
   //   );
   // }
+  editTest(){
+    console.warn('success')
+  }
 
   drop(event: CdkDragDrop<Task[]> | any): void {
     const item = event.previousContainer.data[event.previousIndex];
