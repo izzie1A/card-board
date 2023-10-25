@@ -21,16 +21,23 @@ import { TaskComponent } from './components/task/task.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TaskDialogComponent } from './components/task-dialog/task-dialog.component';
+import { ItemListComponent } from './components/item-list/item-list.component';
 
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
+
+import { ItemCardComponent } from './components/item-card/item-card.component';
+import { ItemCardListComponent } from './components/item-card-list/item-card-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TaskComponent,
     TaskDialogComponent,
+    ItemListComponent,
+    ItemCardComponent,
+    ItemCardListComponent,
   ],
   imports: [
     BrowserModule,

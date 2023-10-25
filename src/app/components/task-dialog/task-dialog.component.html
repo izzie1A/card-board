@@ -1,4 +1,34 @@
+<div>
+    <a>Title</a>
+    <input [(ngModel)]="data.task.title">
+</div>
+<div>
+    <a>name</a>
+    <input [(ngModel)]="data.task.name">
+</div>
+<div>
+    <a>description</a>
+    <input [(ngModel)]="data.task.description">
+</div>
+<div>
+    <a>file</a>
+    <input type="file">
+</div>
+<div>
+    <a>image</a>
+    <input type="file">
+</div>
+
+<!-- <mat-form-field>
+    <mat-label>Title</mat-label>
+    <input matInput  cdkFocusInitial [(ngModel)]="data.task.title"/>
+</mat-form-field>
 <mat-form-field>
+    <mat-label>Title</mat-label>
+    <input matInput  cdkFocusInitial [(ngModel)]="data.task.test"/>
+</mat-form-field> -->
+
+<!-- <mat-form-field>
     <mat-label>Title</mat-label>
     <input matInput cdkFocusInitial [(ngModel)]="data.task.title" />
 </mat-form-field>
@@ -8,15 +38,25 @@
     <textarea matInput [(ngModel)]="data.task.description"></textarea>
 </mat-form-field>
 <mat-form-field>
+    <mat-label>name</mat-label>
+    <textarea matInput [(ngModel)]="data.task.name"></textarea>
+</mat-form-field>
+<mat-form-field>
     <mat-label>id</mat-label>
     <textarea matInput [(ngModel)]="data.task.id"></textarea>
-</mat-form-field>
-
+</mat-form-field> -->
+<div class="flexAround">
+    <button>as</button>
+    <button>as</button>
+</div>
 <div mat-dialog-actions>
     <button mat-button [mat-dialog-close]="{ task: data.task }">OK</button>
+
     <button mat-button (click)="cancel()">Cancel</button>
-    <button *ngIf="data.enableDelete" mat-fab color="primary" aria-label="Delete"
-        [mat-dialog-close]="{ task: data.task, delete: true }">
+    <button *ngIf="data.enableDelete" 
+    mat-fab color="primary" 
+    aria-label="Delete"
+    [mat-dialog-close]="{ task: data.task, delete: true }">
         <mat-icon>delete</mat-icon>
     </button>
 </div> 

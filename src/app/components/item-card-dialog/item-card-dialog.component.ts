@@ -1,19 +1,19 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Item } from '../../services/firebase-service.service';
+
 
 @Component({
-  selector: 'app-task-dialog',
-  templateUrl: './task-dialog.component.html',
-  styleUrls: ['./task-dialog.component.css']
+  selector: 'app-item-card-dialog',
+  templateUrl: './item-card-dialog.component.html',
+  styleUrls: ['./item-card-dialog.component.css']
 })
-export class TaskDialogComponent {
+export class ItemCardDialogComponent {
   private backupTask: Partial<Task> = { ...this.data.task };
 
   constructor(
-    public dialogRef: MatDialogRef<TaskDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: TaskDialogData,
-  ) {}
+    public dialogRef: MatDialogRef<ItemCardDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: TaskDialogData
+  ) { }
 
   cancel(): void {
     this.data.task.title = this.backupTask.title;
@@ -21,23 +21,17 @@ export class TaskDialogComponent {
     this.dialogRef.close(this.data);
   }
 }
-
 export interface TaskDialogData {
   task: Partial<Task>;
   enableDelete: boolean;
-} 
-
-export interface TaskDialogResult {
-  name: string;
-  id: any;
-  task: Item;
-  delete?: boolean;
 }
 
+export interface TaskDialogResult {
+  task: Task;
+  delete?: boolean;
+}
 export interface Task {
-  id: string;
-  name: string;
+  id?: string;
   title: string;
   description: string;
-  test: string;
 }

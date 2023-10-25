@@ -1,0 +1,22 @@
+  .t {
+      width: 100vw;
+      background-color: red;
+      /* justify-content: space-between; */
+  }
+
+  .it {
+      width: 100%;
+      height: 100%;
+  }
+
+  app-new-task {
+      margin-bottom: 30px;
+  }
+
+  .cdk-drag-animating {
+      transition: transform 250ms;
+  }
+
+  .cdk-drag-placeholder {
+      opacity: 0.5;
+  }

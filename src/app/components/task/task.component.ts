@@ -1,5 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Task } from '../task';
+import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
+import { MatDialog } from '@angular/material/dialog';
+// import { TaskDialogComponent, TaskDialogResult } from './task-dialog/task-dialog.component';
+import { TaskDialogResult, TaskDialogComponent } from '../../components/task-dialog/task-dialog.component';
+import { FirebaseServiceService } from '../../services/firebase-service.service';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'app-task',

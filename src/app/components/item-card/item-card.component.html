@@ -1,0 +1,209 @@
+<div class="">
+    <!-- view -->
+    <div *ngIf="itemCardMode=='view'">
+        <div class="itemCardBody itemCardViewGrid">
+            <div>
+                <span class="material-symbols-outlined ">
+                    menu
+                </span>
+            </div>
+            <div class="itemImageFrame">
+                <img src="{{item.posterImage}}" class="itemImageFrameImage">
+            </div>
+            <a class="itemCardTitle">{{item.name}}</a>
+
+            <div></div>
+
+            <button class="itemButton" (click)="itemCardModeSwitch('edit')">
+                <span class="material-symbols-outlined "> edit</span>
+            </button>
+        </div>
+        <!-- <div class="itemCardImagePosterFrame">
+            <img src="{{item.posterImage}}" class="itemImageFrameImage">
+        </div>
+
+        <div class="itemCardHeader flexAround">
+            <a class="itemCardTitle">{{item.name}}</a>
+
+            <div class="itemCardControlBar">
+                <button class="material-symbols-outlined itemImageButton" (click)="itemCardModeSwitch('view')">
+                    <span> folder </span>
+                </button>
+                <button class="material-symbols-outlined itemImageButton" (click)="itemCardModeSwitch('viewDetail')"
+                    [style]="'background-color:var(--yellow)'">
+                    <span> more </span>
+                </button>
+                <button class="material-symbols-outlined itemImageButton" [style]="'background-color:var(--red)'"
+                    (click)="itemCardModeSwitch('edit')">
+                    <span> edit </span>
+                </button>
+            </div>
+        </div> -->
+    </div>
+
+
+
+    <!-- viewDetail -->
+    <div *ngIf="itemCardMode=='viewDetail'">
+
+
+        <div class="itemCardImagePosterFrame">
+            <img [src]="item.posterImage" class="itemImageFrameImage">
+        </div>
+
+
+        <div class="itemCardHeader flexAround">
+            <a class="itemCardTitle">{{item.name}}</a>
+            <div class="itemCardControlBar">
+                <button class="material-symbols-outlined itemImageButton" [style]="'background-color:var(--green)'"
+                    (click)="itemCardModeSwitch('view')">
+                    <span> folder </span>
+                </button>
+                <button class="material-symbols-outlined itemImageButton" (click)="itemCardModeSwitch('viewDetail')">
+                    <span> more </span>
+                </button>
+                <button class="material-symbols-outlined itemImageButton" [style]="'background-color:var(--red)'"
+                    (click)="itemCardModeSwitch('edit')">
+                    <span> edit </span>
+                </button>
+            </div>
+        </div>
+
+        <div class="itemCardSholder">
+            <div class="itemCardKeyValue" [style]="'color:var(--dark);'">
+                <a>{{item.description}}</a>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- edit -->
+    <div *ngIf="itemCardMode=='edit'">
+
+        <div class="itemCardHeader flexAround">
+            <a class="itemCardTitle">{{item.name}}</a>
+            <div class="itemCardControlBar">
+                <button class="material-symbols-outlined itemImageButton" [style]="'background-color:var(--green)'"
+                    (click)="itemCardModeSwitch('view')">
+                    <span> folder </span>
+                </button>
+                <button class="material-symbols-outlined itemImageButton" [style]="'background-color:var(--yellow)'"
+                    (click)="itemCardModeSwitch('viewDetail')">
+                    <span> more </span>
+                </button>
+                <button class="material-symbols-outlined itemImageButton" (click)="itemCardModeSwitch('edit')">
+                    <span> edit </span>
+                </button>
+            </div>
+            <div>
+                <button class="itemCardKeyValue" (click)="this.firebaseS.deleteDoc(address,item.id)"
+                    [style]="'color:var(--dark);'" [style]="'background-color:var(--red);color:var(--seaSick);'">
+                    <span class="material-symbols-outlined"> delete </span>
+                    delete
+                </button>
+                <button class="itemCardKeyValue" (click)="this.firebaseS.docSave(address,item.id,item)"
+                    [style]="'color:var(--dark);'" [style]="'background-color:var(--green)'">
+                    <span class="material-symbols-outlined"> save </span>
+                    save
+                </button>
+            </div>
+        </div>
+
+        <div class="itemCardSholder">
+        </div>
+
+
+        <div class="itemCardBody">
+            <!-- imgArray -->
+            <div>
+                <input class="fileInput" type="file"
+                    (change)="onFileArrayPush( 'loreamFolder/','imageArray',imageArrayInput)" multiple #imageArrayInput>
+
+                <div class="itemCardGridList ">
+                    <div *ngFor="let x of item.imageArray; let i = index" class="itemImageFrame"
+                        [style.width]="'var(--imgM)'" [style.height]="'var(--imgM)'">
+                        <img [src]="x" class="itemImageFrameImage">
+                        <div class="imageFramePannel">
+                            <button class="material-symbols-outlined upload-btn-wrapper itemImageButton"
+                                [style]="'background-color:var(--yellow)'">
+                                Upload
+                                <input class="fileInput" type="file"
+                                    (change)="onFileArrayEdit('loreamFolder/','imageArray',i,imgListImgInput)"
+                                    #imgListImgInput>
+                            </button>
+                            <button class="itemImageButton material-symbols-outlined"
+                                (click)="onFileArrayDelete('imageArray',i)"
+                                [style]="'background-color:var(--red); color:var(--seaSick);'">
+                                <span>delete</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div *ngFor="let y of item | keyvalue; let i = index">
+                <div>
+                    <div class="itemCardKeytValue" *ngIf="editmode!=false">
+                        <div>{{y.key}}</div>
+                        <div>{{y.value}}</div>
+                    </div>
+                    <div class="itemCardKeytValue">
+                        <div class="itemCardKeytValue">
+                            <div>{{y.key}}</div>
+                        </div>
+                        <input (keyup.enter)="localAddField(y.key,itemValue.value)"
+                            (blur)="localAddField(y.key,itemValue.value)" type="text" value="{{y.value}}" #itemValue>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <!-- edit keyValue-->
+    <!-- <div class="itemCard" *ngIf="itemCardMode=='keyValue'">
+        <div class="itemCardHeader">
+            <div>
+                <button class="itemImageButton">
+                    <span class="material-symbols-outlined">edit</span>
+                </button>
+            </div>
+        </div>
+        <div class="itemCardSholder">
+            <a>/address</a>
+        </div>
+        <div class="itemCardBody">
+            <div class="itemCardKeytValue">
+                <div>
+                    <p>{{item}}</p>
+                    <p>id</p>
+                </div>
+                <input type="text">
+
+                <p>descirption</p>
+                <input type="text">
+
+                <p>name</p>
+                <input type="text">
+            </div>
+
+            <div>
+                <input class="fileInput" type="file" (change)="1" #imageArrayInput>
+                <div class="itemCardImageFrameList">
+                    <div class="itemImageFrame">
+                        <img class="itemImageFrameImage" src="https://picsum.photos/400/100">
+                    </div>
+                    <div class="itemImageFrame">
+                        <img class="itemImageFrameImage" src="https://picsum.photos/100/500">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</div>

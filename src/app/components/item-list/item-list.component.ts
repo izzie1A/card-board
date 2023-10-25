@@ -1,48 +1,50 @@
-import { Component } from '@angular/core';
-import { Task } from './components/task';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Task } from '../task';
 import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
 // import { TaskDialogComponent, TaskDialogResult } from './task-dialog/task-dialog.component';
-import { TaskDialogResult, TaskDialogComponent } from './components/task-dialog/task-dialog.component';
-import { FirebaseServiceService } from './services/firebase-service.service';
+import { TaskDialogResult, TaskDialogComponent } from '../../components/task-dialog/task-dialog.component';
+import { FirebaseServiceService, Item } from '../../services/firebase-service.service';
 import { Observable } from 'rxjs/internal/Observable';
+
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app-item-list',
+  templateUrl: './item-list.component.html',
+  styleUrls: ['./item-list.component.css']
 })
-export class AppComponent {
+export class ItemListComponent {
   title = 'card-board';
 
-  viewMode:'grid'|'list'|'roll'='list'
-  viewModeA = ['grid','list','roll'];
+  viewMode: 'grid' | 'list' | 'roll' = 'list'
+  viewModeA = ['grid', 'list', 'roll'];
 
   itemCardArrayContainer: any[] = []
   constructor(private dialog: MatDialog, public fbs: FirebaseServiceService) {
   }
+
   ngOnInit() {
     let itemS = this.fbs.getCollectionValueChange('items');
     itemS.subscribe((x) => {
       this.itemCardArrayContainer[0] = new itemCardArray('items', x);
     })
-    let item2$ = this.fbs.getCollectionValueChange('cities');
-    item2$.subscribe((x) => {
-      this.itemCardArrayContainer[1] = new itemCardArray('cities', x);
-    })
+    // let item2$ = this.fbs.getCollectionValueChange('cities');
+    // item2$.subscribe((x) => {
+    //   this.itemCardArrayContainer[1] = new itemCardArray('cities', x);
+    // })
   }
-  
-  selectCollection(address:string){
-    let itemS = this.fbs.getCollectionValueChange(address);
-    itemS.subscribe((x) => {
-      this.itemCardArrayContainer[0] = new itemCardArray(address, x);
-    })
-   }
 
   addArray(address: string) {
     let x: Observable<any[]>;
     x = this.fbs.getCollectionValueChange(address);
     x.subscribe((x) => {
       this.itemCardArrayContainer.push(new itemCardArray(address, x));
+    })
+  }
+  
+  selectCollection(address: string) {
+    let itemS = this.fbs.getCollectionValueChange(address);
+     itemS.subscribe((x) => {
+      this.itemCardArrayContainer[0] = new itemCardArray(address, x);
     })
   }
 
@@ -84,8 +86,7 @@ export class AppComponent {
       // }
     });
   }
-
-  editTest(){
+  editTest() {
     console.warn('success')
   }
 
@@ -125,8 +126,8 @@ export class AppComponent {
       return
     }
   }
-
-  newTask(): void {
+  
+  newTask(address:string): void {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '270px',
       data: {
@@ -135,18 +136,24 @@ export class AppComponent {
     });
     dialogRef
       .afterClosed()
-      .subscribe((result: TaskDialogResult | undefined) => {
+      .subscribe((result: TaskDialogResult ) => {
         if (!result) {
           return;
+        }else{
+          console.log(result);
+          let x = result;
+          let y = {
+            id:'x.id',
+            name:'x.name',
+          }
+          this.fbs.addDoc('',y)
         }
-        // console.log(result);
-        // this.c();
+        // this.fbs.createDoc('',id,result)
         // this.todo.push(result.task);
       });
   }
 }
 
-// this.itemCardArrayContainer[0].arrayContent.push(result.task);
 
 class itemCardArray {
   arrayID: string;
@@ -158,8 +165,6 @@ class itemCardArray {
   }
 
   addNullItemCard() {
-    // this.arrayContent.push(new itemCardItem(this.arrayContent.length, 'nullName' + this.arrayContent.length))
-    // this.arrayContent.push(new itemCardItem(this.arrayContent.length, 'nullName' + this.arrayContent.length))
     // this.arrayContent.push(new itemCardItem(this.arrayContent.length, 'nullName' + this.arrayContent.length))
   }
 }

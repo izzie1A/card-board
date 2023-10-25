@@ -1,0 +1,50 @@
+<div>
+  <div class="itemCardGrid">
+    <div class="itemCardGrid">
+      <select [style]="'width:auto'" (change)="selectCollection(selecter.value)" #selecter>
+        <option>items</option>
+        <option>cities</option>
+        <option>test</option>
+      </select>
+      <input [style]="'width:auto'" value="{{selecter.value}}" placeholder="Search.." #collectionAddress>
+    </div>
+
+    <button class="button-45" (click)="selectCollection(collectionAddress.value)">
+      <span class="material-symbols-outlined">
+        search
+      </span>
+      <a>enter</a>
+    </button>
+  </div>
+</div>
+
+<div class="" cdkDropListGroup>
+  <div class="" *ngFor="let itemArray of itemCardArrayContainer">
+
+    <div class="flexAround">
+      <h2>{{itemArray.arrayID}}</h2>
+      <button (click)="a(itemArray.arrayID)" mat-button>
+        <mat-icon>add</mat-icon> Add Task
+      </button>
+    </div>
+
+    <div class="flexAround">
+      <button (click)="newTask(itemArray.arrayID)" mat-buttosacxzn>
+        <mat-icon>add</mat-icon> New Task
+      </button>
+      <button mat-button>
+        <mat-icon>add</mat-icon> more
+      </button>
+    </div>
+
+    <div class="itemCardFlexList" cdkDropList [cdkDropListData]="itemArray.arrayContent"
+      (cdkDropListDropped)="drop($event)" #{{itemArray.arrayID}}="cdkDropList" id="{{itemArray.arrayID}}">
+
+      <app-task *ngFor="let item of itemArray.arrayContent" [task]="item" (editTest)="editTest()"
+        (editDelete)="d(itemArray.arrayID, item.id)" (edit)="editTask(itemArray.arrayID, $event)" cdkDrag>
+      </app-task>
+
+    </div>
+  </div>
+</div>
+

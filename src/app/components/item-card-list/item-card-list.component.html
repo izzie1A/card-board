@@ -1,0 +1,81 @@
+<div>
+  {{user}}
+</div>
+
+<div class="itemCard">
+  <div class="itemCardHeader flexAround">
+    <!--  -->
+    <div class="">
+      <p class="itemCardHeaderTitle">{{address.split("/").pop()}}</p>
+      <!-- list -->
+      <select (change)="switchCollection(collectionOption.value)" #collectionOption>
+        <option value="">--Please choose an option--</option>
+        <option *ngFor="let collection of collectionArray" value="{{collection.address}}">
+          {{collection.displayName}}
+        </option>
+      </select>
+    </div>
+
+    <div class="itemCardControlBar">
+      <button class=" itemButton " (click)="createEmpty()">
+        <span class="material-symbols-outlined "> create_new_folder</span>
+        <p class="itemCardKeyValue">New</p>
+      </button>
+      <button class=" itemButton " (click)="switchViewmode()">
+        <span class="material-symbols-outlined "> resize</span>
+        <p class="itemCardKeyValue">Switch</p>
+      </button>
+      <button (click)="test()">
+        test
+      </button>
+    </div>
+  </div>
+
+  <div class="itemCardSholder ">
+    <a class="">{{address}}</a>
+  </div>
+  <!-- <div *ngFor="let x of itemArray| keyvalue"> -->
+  <!-- <app-item-card *ngFor="let item of itemArray| keyvalue" [item]="item" [address]="address"
+    [itemCardMode]="itemCardMode"></app-item-card> -->
+  <!-- </div> -->
+  <!-- <div class="itemCardViewGrid ">
+    <a> control Bar</a>
+    <a> Icon</a>
+    <a> Name</a>
+    <a> Detail</a>
+  </div>` -->
+
+
+  <!-- test -->
+  <!-- <div class="itemCard" *ngFor="let x of collectionArray" [style]="'width:100px;'">
+    <div class="itemCardHeader" [style]="'padding-left:5%;'">
+      {{x.displayName}}
+    </div>
+    <div class="keyValue" [style]="'padding-left:5%;'">
+      {{x.address}}
+    </div>
+  </div> -->
+
+  <!-- test -->
+
+
+  <!-- <div *ngFor="let item of item$|async">
+    <div>
+      {{item.name}}
+      <div class="itemCardImagePosterFrame" [style]="'width:20%;height:'">
+        <img src="{{item.posterImage}}" class="itemImageFrameImage">
+      </div>
+    </div>
+  </div> -->
+
+
+  <div class="itemCardList">
+    <app-item-card *ngFor="let item of item$|async" [item]="item" [address]="address"
+      [itemCardMode]="itemCardMode"></app-item-card>
+  </div>
+
+  <div >
+    <app-item-card *ngFor=" let x of itemArray" [item]="x" [address]="address"
+      [itemCardMode]="itemCardMode"></app-item-card>
+  </div>
+</div>

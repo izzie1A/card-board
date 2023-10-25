@@ -1,0 +1,17 @@
+.itemCardList {}
+
+@media only screen and (min-width: 700px) {
+  /* .itemCardList {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    justify-content: space-evenly;
+  } */
+}
+
+@media only screen and (min-width: 1200px) {
+  /* .itemCardList {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    justify-content: space-evenly;
+  } */
+} 

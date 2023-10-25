@@ -1,0 +1,94 @@
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+<div class="itemCard">
+    <div class="itemCardHeader flexAround">
+        <div class="itemCardTitle">
+            <h3>{{item.name}}</h3> 
+        </div>
+        <div class="itemCardControlBar" *ngIf="editmode==false">
+            <button class="itemImageButton">
+                <span class="material-symbols-outlined">edit</span>
+            </button>
+            <button class="itemImageButton">
+                <span class="material-symbols-outlined">open_in_full</span>
+            </button>
+            <button class="itemImageButton">
+                <span class="material-symbols-outlined">close_fullscreen</span>
+            </button>
+        </div>
+        <div class="itemCardControlBar"  *ngIf="editmode==true">
+            <button class="itemImageButton">
+                <span class="material-symbols-outlined">save</span>
+            </button>
+            <button class="itemImageButton">
+                <span class="material-symbols-outlined">delete</span>
+            </button>
+            <button class="itemImageButton">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="itemSholder" #itemSholderDiv>
+    </div>
+
+    <div class="itemCardBody">
+        <!-- image array-->
+        <div class="itemCardImageContainer">
+            <div class="">
+                <input class="fileInput" type="file" (change)="onFilePush($event, item, 'imageArray')">
+            </div>
+
+            <div class="itemCardImageFrameList ">
+                <div *ngFor="let x of item.imageArray ; let i = index" class="itemImageFrame">
+                    <img class="itemCardImage" src="{{x}}" #logo>
+                    <div class="itemCardImageEditPanel">
+                        <button class="material-symbols-outlined upload-btn-wrapper itemImageButton">
+                            <input class="fileInput" type="file"
+                                (change)="onFileEdit($event,item,'imageArray',i)">Upload
+                        </button>
+                        <button class="material-symbols-outlined itemImageButton"
+                            (click)="onFileDelete($event,item,'imageArray',i)">delete</button>
+                        <button class="material-symbols-outlined itemImageButton"
+                            (click)="onFileClear($event,item,'imageArray',i)">cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- image array-->
+        <div class="itemCardKeytValue">
+            <div>name</div>
+            <div>b</div>
+
+            <div>description</div>
+            <div>b</div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- keyValue -->
+<!-- <div class="itemCardKeytValue" *ngIf="editmode!=false">
+            <p>Add field</p>
+            <button (click)="localAddField(item,'undefinded','')" class="button-23" *ngIf="1">
+                <span class="material-symbols-outlined">add</span>
+            </button>
+        </div>
+        <div class="itemCardKeytValue" *ngFor="let y of item |keyvalue; let i = index">
+            <div *ngIf="editmode==false">{{y.key}}</div>
+            <div *ngIf="editmode==false">{{y.value}}</div>
+
+            <div *ngIf="editmode!=false && y.key=='id'">{{y.key}}</div>
+
+            <div *ngIf="y.key!='id' && editmode!=false" class="temCardValue">
+                <button class="material-symbols-outlined itemImageButton"
+                    (click)="localDeleteField(y,y.key,itemKey.value)">
+                    delete
+                </button>
+                <input (keyup.enter)="localChangeField(y,y.key,itemKey.value)"
+                    (blur)="localChangeField(y,y.key,itemKey.value)" type="text" value="{{y.key}}" #itemKey>
+            </div>
+            <input *ngIf="editmode!=false " (keyup.enter)="localAddField(y,y.key,itemValue.value)"
+                (blur)="localAddField(y,y.key,itemValue.value)" type="text" value="{{y.value}}" #itemValue>
+        </div> -->
+<!-- keyValue -->

@@ -14,20 +14,10 @@ import { TaskComponent } from '../components/task/task.component';
   providedIn: 'root'
 })
 export class FirebaseServiceService {
-  item$: Observable<Item[] | Task[] | any[]>;
+  // item$: Observable<Item[] | Task[] | any[]>;
   firestore: Firestore = inject(Firestore);
 
   constructor() {
-    const itemCollection = collection(this.firestore, 'items');
-    this.item$ = collectionData(itemCollection);
-
-    let xs = collectionData(collection(this.firestore, 'todo')) as Observable<Task[]>;
-    // let xs = collectionData(collection(this.firestore,'inProgress')) as Observable<Task[]>;
-    // let xs = collectionData(collection(this.firestore,'done')) as Observable<Task[]>;
-    // let todo = this.firestore.collection('todo').valueChanges({ idField: 'i d' }) as Observable<Task[]>;
-    // let inProgress = this.firestore.collection('inProgress').valueChanges({ idField: 'id' }) as Observable<Task[]>;
-    // let done = this.firestore.collection('done').valueChanges({ idField: 'id' }) as Observable<Task[]>;
-
   }
 
   g(address: string) {
@@ -37,32 +27,39 @@ export class FirebaseServiceService {
   }
 
   getCollectionValueChange(address: string) {
-    // let todo = this.firestore.collection('todo').valueChanges({ idField: 'id' }) as Observable<Task[]>;
-    // let inProgress = this.firestore.collection('inProgress').valueChanges({ idField: 'id' }) as Observable<Task[]>;
-    // let done = this.firestore.collection('done').valueChanges({ idField: 'id' }) as Observable<Task[]>;
-    // const collection =  collection(this.firestore, 'address');
-
     const itemCollection = collection(this.firestore, address);
     return collectionData(itemCollection) as Observable<Task[]>
   }
+  
 
   async addNullDoc(address: string) {
     const coll = collection(this.firestore, address);
     const snapshot = await getCountFromServer(coll);
     let x = snapshot.data().count.toString();
-    
-    let content: Task = {
+    let content: Item = {
       id: 'undefinded',
       title: x + 'undefindedTitle',
       description: x + 'undefindeddescription',
       name: x + 'undefindedName'
     }
-
-    const docRef = await addDoc(collection(this.firestore,address), content);
-    // console.log("created Document written with ID: ", docRef.id, content);
+    const docRef = await addDoc(collection(this.firestore, address), content);
     content.id = docRef.id.toString();
-    const docReff = doc(this.firestore, address, docRef.id);
-    await updateDoc(docReff, {id:docRef.id.toString()});
+    const uploadedDocReff = doc(this.firestore, address, docRef.id);
+    await updateDoc(uploadedDocReff, { id: docRef.id.toString() });
+    // console.log("created Document written with ID: ", docRef.id, content);
+  }
+  async addDoc(address: string, contents: Item) {
+    let content: Item = {
+      id: contents.id,
+      title: contents.title,
+      description: contents.description,
+      name: contents.name,
+    }
+    const docRef = await addDoc(collection(this.firestore, address), content);
+    content.id = docRef.id.toString();
+    const uploadedDocReff = doc(this.firestore, address, docRef.id);
+    await updateDoc(uploadedDocReff, { id: docRef.id.toString() });
+    // console.log("created Document written with ID: ", docRef.id, content);
   }
 
   async docSave(address: string, id: string, content: any) {
@@ -103,7 +100,9 @@ export class FirebaseServiceService {
   }
 }
 
-interface Item {
-  name: string,
-};
-
+export interface Item {
+  id: string;
+  name: string;
+  title?: string;
+  description?: string;
+}
